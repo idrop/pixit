@@ -1,0 +1,47 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+ext {
+    dropwizard_version = '2.0.10'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation(
+            "io.dropwizard:dropwizard-core:${dropwizard_version}",
+            "io.dropwizard:dropwizard-views-mustache:${dropwizard_version}",
+            "io.dropwizard:dropwizard-json-logging:${dropwizard_version}",
+            "io.dropwizard:dropwizard-assets:${dropwizard_version}",
+            "io.dropwizard:dropwizard-views:${dropwizard_version}",
+            "io.dropwizard:dropwizard-client:${dropwizard_version}",
+            "com.fasterxml.jackson.core:jackson-core:2.11.1"
+    )
+
+    // Use JUnit Jupiter API for testing.
+    testImplementation (
+            "org.junit.jupiter:junit-jupiter-api:5.5.1",
+            "org.assertj:assertj-core:3.16.1"
+    )
+
+    // Use JUnit Jupiter Engine for testing.
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.5.1'
+}
+
+// Dependency report across all modules
+task allDeps(type: DependencyReportTask) {}
+
+
+test {
+    // Use junit platform for unit tests
+    useJUnitPlatform()
+}
+
+defaultTasks 'clean', 'build'
+
+mainClassName = 'com.pixit.app.PixitApplication'
+run {
+    args 'server', './src/dist/config.yaml'
+}
